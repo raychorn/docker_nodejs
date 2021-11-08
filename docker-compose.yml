@@ -9,8 +9,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    tty: true
-    stdin_open: true
+    #tty: true
+    #stdin_open: true
     #command: ["ls -la"] # /workspaces/entrypoint.sh
     #command: >
     #    bash -c "python manage.py migrate

@@ -20,7 +20,6 @@ RUN apt-get update && apt-get install -y -q --no-install-recommends \
     build-essential \
     ca-certificates \
     curl \
-    git \
     zsh \
     nano \
     htop \
@@ -34,58 +33,39 @@ RUN TZ=US/Mountain \
 RUN curl -sL https://deb.nodesource.com/setup_15.x | bash - && \
     apt-get install nodejs -y -q --fix-missing
 ############## END
-##############################################################################################
-RUN yes | npm install -g @angular/cli && \
-    ng version && \
-    apt-get upgrade git -y --fix-missing && \
-    apt install default-jre -y --fix-missing && \
-    apt install openjdk-11-jre-headless -y --fix-missing && \
-    apt install openjdk-8-jre-headless -y --fix-missing 
 ########### BEGIN
-RUN apt install libz-dev libssl-dev libcurl4-gnutls-dev libexpat1-dev gettext cmake gcc -y && \
-    cd /tmp && \
-    curl -o git.tar.gz https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.29.2.tar.gz && \
-    tar -zxf git.tar.gz && \
-    cd git-* && \
-    make prefix=/usr/local all && \
-    make prefix=/usr/local install && \
-    git config --global user.email "raychorn@gmail.com" && \
-    git config --global user.name "Ray C Horn" 
-############### OR NEW
-RUN apt update -y && \
+RUN apt-get update -y && \
     apt-get upgrade -y && \
-    apt install make libssl-dev libghc-zlib-dev libcurl4-gnutls-dev libexpat1-dev gettext unzip -y --fix-missing && \
-    cd /tmp && \
-    curl -o git.tar.gz https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.29.2.tar.gz && \
-    tar -zxf git.tar.gz && \
-    cd git-* && \
-    NPROC=$(nproc) && \
-    make -j $NPROC && \
-    make prefix=/usr/local all && \
-    make prefix=/usr/local install && \
+    apt-get install software-properties-common -y && \
+    add-apt-repository ppa:git-core/ppa && \
+    apt-get update -y && \
+    apt-get install git -y --fix-missing && \
     git config --global user.email "raychorn@gmail.com" && \
     git config --global user.name "Ray C Horn" 
 ############## END
-RUN npm install -g npm-check-updates
-#########################################################################################################
-RUN apt install libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev -y --fix-missing && \
-    apt install software-properties-common -y && \
-    add-apt-repository ppa:deadsnakes/ppa -y && \
-    apt install python3.9 -y --fix-missing && \
-    python3.9 -m ensurepip --upgrade && \
-    pip install virtualenv
+RUN apt-get install libreadline-gplv2-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev -y --fix-missing && \
+    add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get install python3.9 -y --fix-missing && \
+    apt-get install python3.9-dev -y --fix-missing && \
+    apt-get install python3.9-distutils -y --fix-missing && \
+    apt-get install python3.9-venv -y --fix-missing && \
+    curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py && \
+    python3.9 /tmp/get-pip.py && \
+    pip3.9 install --user --upgrade pip
 
 #####################################################################################################
-RUN curl -sL https://deb.nodesource.com/setup_15.x | bash - && \
-    apt-get install nodejs -y -q --fix-missing && \
-    npm cache clean -f && \
-    npm install -g n && \
-    n latest && \
-    npm install -g firebase-tools
+RUN apt-get install aptitude -y --fix-missing && \
+    aptitude install libnode-dev -y && \
+    aptitude install libnode64 -y && \
+    aptitude install node-gyp -y && \
+    aptitude install npm -y
 
-RUN yes | npm install -g @angular/cli && \
-    npm install -g npm-check-updates && \
-    npm i -g npm-upgrade
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
+    apt-get install nodejs -y -q && \
+    npm install -g npm@8.1.3
 
-RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+RUN yes | npm install -g @angular/cli
+    #npm install -g npm-check-updates && \
+    #npm i -g npm-upgrade
+
+RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k

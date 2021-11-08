@@ -6,7 +6,7 @@ if [ "$ROOTDIR" = "." ]; then
 fi
 echo "1. ROOTDIR:$ROOTDIR"
 
-docker-compose up -d
+clear && docker-compose up -d --build --force-recreate
 
 ENTRYPOINT=$ROOTDIR/entrypoint.sh
 
@@ -24,6 +24,6 @@ if [ -z "$CID" ]; then
 fi
 
 echo "ENTRYPOINT:$ENTRYPOINT --> $CID:/entrypoint.sh"
-docker cp $ENTRYPOINT $CID:/entrypoint.sh
+#docker cp $ENTRYPOINT $CID:/entrypoint.sh
 
-docker exec -it $CID /bin/bash -c "chmod +x /entrypoint.sh && /entrypoint.sh 0"
+#docker exec -it $CID /bin/bash -c "chmod +x /entrypoint.sh && /entrypoint.sh 0"
