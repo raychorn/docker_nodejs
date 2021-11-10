@@ -24,6 +24,6 @@ if [ -z "$CID" ]; then
 fi
 
 echo "ENTRYPOINT:$ENTRYPOINT --> $CID:/entrypoint.sh"
-#docker cp $ENTRYPOINT $CID:/entrypoint.sh
+docker cp $ENTRYPOINT $CID:/entrypoint.sh
 
-#docker exec -it $CID /bin/bash -c "chmod +x /entrypoint.sh && /entrypoint.sh 0"
+docker exec -it $CID /bin/bash -c "chmod +x /entrypoint.sh && /entrypoint.sh 0"
